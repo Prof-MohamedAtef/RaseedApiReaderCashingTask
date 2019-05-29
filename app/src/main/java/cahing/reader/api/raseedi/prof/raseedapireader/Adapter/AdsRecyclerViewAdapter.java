@@ -16,6 +16,7 @@ import com.squareup.picasso.Picasso;
 import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.List;
 
 import cahing.reader.api.raseedi.prof.raseedapireader.Activities.WebViewActivity;
 import cahing.reader.api.raseedi.prof.raseedapireader.Model.AdsEntity;
@@ -29,12 +30,12 @@ import cahing.reader.api.raseedi.prof.raseedapireader.R;
 public class AdsRecyclerViewAdapter extends RecyclerView.Adapter<AdsRecyclerViewAdapter.ViewHOlder> implements Serializable{
 
     Context mContext;
-    ArrayList<AdsEntity> feedItemList;
+    List<AdsEntity> feedItemList;
     boolean TwoPane;
     private String BaseImage;
     public static String AdUrl="AdURL";
 
-    public AdsRecyclerViewAdapter(Context mContext, ArrayList<AdsEntity> feedItemList, boolean twoPane) {
+    public AdsRecyclerViewAdapter(Context mContext, List<AdsEntity> feedItemList, boolean twoPane) {
         this.mContext = mContext;
         this.feedItemList = feedItemList;
         TwoPane = twoPane;
