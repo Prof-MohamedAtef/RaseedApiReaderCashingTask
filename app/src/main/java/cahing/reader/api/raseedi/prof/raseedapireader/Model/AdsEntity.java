@@ -1,18 +1,56 @@
 package cahing.reader.api.raseedi.prof.raseedapireader.Model;
 
+import android.arch.persistence.room.ColumnInfo;
+import android.arch.persistence.room.Entity;
+import android.arch.persistence.room.PrimaryKey;
+import android.support.annotation.NonNull;
+
+import java.io.Serializable;
+import java.net.IDN;
+
 /**
  * Created by Prof-Mohamed Atef on 28/05/2019.
- * Pojo class used as getter/setter
+ * Pojo class used as getter/setter and DB Table for Cashing using Room
  */
 
-public class AdsEntity {
+@Entity(tableName = "Ads")
+public class AdsEntity implements Serializable{
+
+    @NonNull
+    @PrimaryKey(autoGenerate = true)
+    @ColumnInfo(name = "ID")
+    public int ID;
+
+    @NonNull
+    @ColumnInfo(name = "picture")
     public String picture ;
+
+    @NonNull
+    @ColumnInfo(name = "action")
     public String action;
+
+    @NonNull
+    @ColumnInfo(name = "title")
     public String title ;
+
+    @NonNull
+    @ColumnInfo(name = "url")
     public String url ;
+
+    @NonNull
+    @ColumnInfo(name = "solo")
     public boolean solo ;
+
+    @NonNull
+    @ColumnInfo(name = "best_offer")
     public boolean best_offer ;
+
+    @NonNull
+    @ColumnInfo(name = "sucess")
     public boolean sucess ;
+
+    @NonNull
+    @ColumnInfo(name = "order")
     public int order ;
 
     public AdsEntity() {
