@@ -6,6 +6,7 @@ import android.net.NetworkInfo;
 
 /**
  * Created by Prof-Mohamed Atef on 28/05/2019.
+ * used to check network connectivity changes
  */
 
 public class VerifyConnection {

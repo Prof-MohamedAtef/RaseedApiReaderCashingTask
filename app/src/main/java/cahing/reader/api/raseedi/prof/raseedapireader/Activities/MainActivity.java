@@ -54,6 +54,7 @@ public class MainActivity extends AppCompatActivity {
             fetchAds();
         }else {
             // get data from database
+            // will be added to develop branch
         }
 
     }
