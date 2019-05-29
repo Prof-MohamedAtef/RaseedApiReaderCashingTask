@@ -55,6 +55,7 @@ public class MainActivity extends AppCompatActivity {
         }else {
             // get data from database
             // will be added to develop branch
+            // will also be added to feature branch
         }
 
     }
