@@ -2,7 +2,7 @@ package cahing.reader.api.raseedi.prof.raseedapireader.Model;
 
 /**
  * Created by Prof-Mohamed Atef on 28/05/2019.
- * Pojo class used to model data
+ * Pojo class used as getter/setter
  */
 
 public class AdsEntity {
@@ -93,10 +93,3 @@ public class AdsEntity {
         this.order = order;
     }
 }
-
-/*
-public class RootObject
-{
-
-}
- */

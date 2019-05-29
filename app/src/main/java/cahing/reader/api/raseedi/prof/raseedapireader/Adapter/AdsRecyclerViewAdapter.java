@@ -1,11 +1,13 @@
 package cahing.reader.api.raseedi.prof.raseedapireader.Adapter;
 
 import android.content.Context;
+import android.content.Intent;
 import android.support.annotation.NonNull;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.FrameLayout;
 import android.widget.ImageView;
 import android.widget.TextView;
 
@@ -15,6 +17,7 @@ import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.HashMap;
 
+import cahing.reader.api.raseedi.prof.raseedapireader.Activities.WebViewActivity;
 import cahing.reader.api.raseedi.prof.raseedapireader.Model.AdsEntity;
 import cahing.reader.api.raseedi.prof.raseedapireader.R;
 
@@ -29,6 +32,7 @@ public class AdsRecyclerViewAdapter extends RecyclerView.Adapter<AdsRecyclerView
     ArrayList<AdsEntity> feedItemList;
     boolean TwoPane;
     private String BaseImage;
+    public static String AdUrl="AdURL";
 
     public AdsRecyclerViewAdapter(Context mContext, ArrayList<AdsEntity> feedItemList, boolean twoPane) {
         this.mContext = mContext;
@@ -56,16 +60,25 @@ public class AdsRecyclerViewAdapter extends RecyclerView.Adapter<AdsRecyclerView
                             Picasso.with(mContext).load(BaseImage)
                                     .error(R.drawable.reload)
                                     .into(holder.Image);
+                            if (feedItem.getUrl()!=null){
+                                final AdsEntity finalFeedItem = feedItem;
+                                holder.frame.setOnClickListener(new View.OnClickListener() {
+                                    @Override
+                                    public void onClick(View v) {
+                                        String url = finalFeedItem.getUrl();
+                                        Intent intent = new Intent(mContext, WebViewActivity.class);
+                                        intent.putExtra(AdUrl, url);
+                                        mContext.startActivity(intent);
+                                    }
+                                });
+                            }
                         }
                     } else {
                         holder.Title.setText("");
                     }
 
                     /*
-                    String url = articlesEntity.getARTICLE_URL();
-                            Intent intent = new Intent(mContext, WebViewerActivity.class);
-                            intent.putExtra(ArticleTypesListActivity.URL_KEY, url);
-                            mContext.startActivity(intent);
+
                      */
         }
     }
@@ -78,11 +91,13 @@ public class AdsRecyclerViewAdapter extends RecyclerView.Adapter<AdsRecyclerView
     class ViewHOlder extends RecyclerView.ViewHolder {
         private final ImageView Image;
         private final TextView Title;
+        private final FrameLayout frame;
 
         public ViewHOlder(View converview) {
             super(converview);
             this.Image = (ImageView) converview.findViewById(R.id.ad_image);
             this.Title=(TextView)converview.findViewById(R.id.ad_title);
+            this.frame=(FrameLayout)converview.findViewById(R.id.ad_container);
         }
     }
 }
