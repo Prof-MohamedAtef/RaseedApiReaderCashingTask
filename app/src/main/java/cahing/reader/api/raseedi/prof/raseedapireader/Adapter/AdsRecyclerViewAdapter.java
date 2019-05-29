@@ -20,6 +20,7 @@ import cahing.reader.api.raseedi.prof.raseedapireader.R;
 
 /**
  * Created by Prof-Mohamed Atef on 28/05/2019.
+ * used to populate Recycler View with ListOfAds
  */
 
 public class AdsRecyclerViewAdapter extends RecyclerView.Adapter<AdsRecyclerViewAdapter.ViewHOlder> implements Serializable{
@@ -59,6 +60,13 @@ public class AdsRecyclerViewAdapter extends RecyclerView.Adapter<AdsRecyclerView
                     } else {
                         holder.Title.setText("");
                     }
+
+                    /*
+                    String url = articlesEntity.getARTICLE_URL();
+                            Intent intent = new Intent(mContext, WebViewerActivity.class);
+                            intent.putExtra(ArticleTypesListActivity.URL_KEY, url);
+                            mContext.startActivity(intent);
+                     */
         }
     }
 
