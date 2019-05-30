@@ -19,7 +19,7 @@ public interface AdsDao {
     @Insert
     long InsertAds(AdsEntity adsEntity);
 
-    @Query("SELECT * FROM Ads")
+    @Query("SELECT * FROM Ads ORDER BY 'order' ASC")
     LiveData<List<AdsEntity>> getAllAds();
 
     @Query("DELETE FROM Ads")

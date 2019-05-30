@@ -28,13 +28,14 @@ import cahing.reader.api.raseedi.prof.raseedapireader.R;
  * used to populate Recycler View with ListOfAds
  */
 
-public class AdsRecyclerViewAdapter extends RecyclerView.Adapter<AdsRecyclerViewAdapter.ViewHOlder> implements Serializable{
+public class AdsRecyclerViewAdapter extends RecyclerView.Adapter<AdsRecyclerViewAdapter.ViewHOlder> implements Serializable {
 
     Context mContext;
     List<AdsEntity> feedItemList;
     boolean TwoPane;
     private String BaseImage;
-    public static String AdUrl="AdURL";
+    public static String AdUrl = "AdURL";
+    private AdsEntity feedItemPos;
 
     public AdsRecyclerViewAdapter(Context mContext, List<AdsEntity> feedItemList, boolean twoPane) {
         this.mContext = mContext;
