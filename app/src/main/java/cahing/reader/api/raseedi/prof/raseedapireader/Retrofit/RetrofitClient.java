@@ -11,11 +11,12 @@ import retrofit2.converter.gson.GsonConverterFactory;
 
 public class RetrofitClient {
 
-    private static Retrofit ourInstance;
-    private static String BASE_URL="https://simswitch.bit68.com/get_ad/?solo=false";
+    private static Retrofit ourInstance=null;
+    private static String BASE_URL="https://simswitch.bit68.com/";
 
     public static Retrofit getInstance() {
         if (ourInstance==null)
+
             ourInstance=new Retrofit.Builder()
                     .baseUrl(BASE_URL)
                     .addConverterFactory(GsonConverterFactory.create())

@@ -12,6 +12,6 @@ import retrofit2.http.GET;
  */
 
 public interface MyAPiInterface {
-    @GET("ads")
+    @GET("get_ad/?solo=false")
     Observable<List<AdsEntity>> getAds();
 }

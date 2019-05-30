@@ -4,8 +4,12 @@ import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
+import android.text.TextUtils;
+import android.widget.Toast;
 
 import java.util.List;
+import java.util.Observable;
+import java.util.concurrent.TimeUnit;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
@@ -18,6 +22,7 @@ import cahing.reader.api.raseedi.prof.raseedapireader.helpers.VerifyConnection;
 import io.reactivex.Scheduler;
 import io.reactivex.android.schedulers.AndroidSchedulers;
 import io.reactivex.disposables.CompositeDisposable;
+import io.reactivex.disposables.Disposable;
 import io.reactivex.functions.Consumer;
 import io.reactivex.schedulers.Schedulers;
 import retrofit2.Retrofit;
@@ -25,7 +30,10 @@ import retrofit2.Retrofit;
 public class MainActivity extends AppCompatActivity {
 
     MyAPiInterface myAPiInterface;
-    CompositeDisposable compositeDisposable= new CompositeDisposable();
+    CompositeDisposable compositeDisposable;
+    private Disposable disposable;
+    private long DELAY=1000;
+    private long PERIOD=5000;
 
     @Override
     protected void onStop() {
@@ -55,12 +63,13 @@ public class MainActivity extends AppCompatActivity {
         }else {
             // get data from database
             // will be added to develop branch
-            // will also be added to feature branch
+            // will also be added to feature branch -- added
+            //
         }
-
     }
 
     private void fetchAds() {
+        compositeDisposable= new CompositeDisposable();
         compositeDisposable.add(myAPiInterface.getAds()
         .subscribeOn(Schedulers.io())
         .observeOn(AndroidSchedulers.mainThread())
