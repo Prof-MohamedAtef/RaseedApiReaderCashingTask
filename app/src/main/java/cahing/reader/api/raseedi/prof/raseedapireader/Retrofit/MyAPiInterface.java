@@ -9,6 +9,7 @@ import retrofit2.http.GET;
 /**
  * Created by Prof-Mohamed Atef on 28/05/2019.
  * try to get ads
+ * declare functions and endpoint to get Json data
  */
 
 public interface MyAPiInterface {

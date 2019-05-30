@@ -9,6 +9,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.FrameLayout;
 import android.widget.ImageView;
+import android.widget.LinearLayout;
 import android.widget.TextView;
 
 import com.squareup.picasso.Picasso;
@@ -51,36 +52,33 @@ public class AdsRecyclerViewAdapter extends RecyclerView.Adapter<AdsRecyclerView
 
     @Override
     public void onBindViewHolder(@NonNull AdsRecyclerViewAdapter.ViewHOlder holder, final int position) {
-        AdsEntity feedItem=null;
+        AdsEntity feedItem = null;
         feedItem = feedItemList.get(position);
         if (feedItem != null) {
-            if (feedItem.getTitle()!= null) {
+            if (feedItem.getTitle() != null) {
                 holder.Title.setText(feedItem.getTitle());
-                        if (feedItem.getPicture()!=null){
-                            BaseImage= feedItem.getPicture();
-                            Picasso.with(mContext).load(BaseImage)
-                                    .error(R.drawable.reload)
-                                    .into(holder.Image);
-                            if (feedItem.getUrl()!=null){
-                                final AdsEntity finalFeedItem = feedItem;
-                                holder.frame.setOnClickListener(new View.OnClickListener() {
-                                    @Override
-                                    public void onClick(View v) {
-                                        String url = finalFeedItem.getUrl();
-                                        Intent intent = new Intent(mContext, WebViewActivity.class);
-                                        intent.putExtra(AdUrl, url);
-                                        mContext.startActivity(intent);
-                                    }
-                                });
+                if (feedItem.getPicture() != null) {
+                    BaseImage = feedItem.getPicture();
+                    Picasso.with(mContext).load(BaseImage)
+                            .error(R.drawable.reload)
+                            .into(holder.Image);
+                    if (feedItem.getUrl() != null) {
+                        final AdsEntity finalFeedItem = feedItem;
+                        holder.frame.setOnClickListener(new View.OnClickListener() {
+                            @Override
+                            public void onClick(View v) {
+                                // direct to the ad url
+                                String url = finalFeedItem.getUrl();
+                                Intent intent = new Intent(mContext, WebViewActivity.class);
+                                intent.putExtra(AdUrl, url);
+                                mContext.startActivity(intent);
                             }
-                        }
-                    } else {
-                        holder.Title.setText("");
+                        });
                     }
-
-                    /*
-
-                     */
+                }
+            } else {
+                holder.Title.setText("");
+            }
         }
     }
 
@@ -92,13 +90,13 @@ public class AdsRecyclerViewAdapter extends RecyclerView.Adapter<AdsRecyclerView
     class ViewHOlder extends RecyclerView.ViewHolder {
         private final ImageView Image;
         private final TextView Title;
-        private final FrameLayout frame;
+        private final LinearLayout frame;
 
         public ViewHOlder(View converview) {
             super(converview);
             this.Image = (ImageView) converview.findViewById(R.id.ad_image);
             this.Title=(TextView)converview.findViewById(R.id.ad_title);
-            this.frame=(FrameLayout)converview.findViewById(R.id.ad_container);
+            this.frame=(LinearLayout) converview.findViewById(R.id.ad_container);
         }
     }
 }

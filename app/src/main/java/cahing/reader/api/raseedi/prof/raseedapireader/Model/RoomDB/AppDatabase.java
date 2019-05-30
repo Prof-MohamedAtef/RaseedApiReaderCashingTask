@@ -16,7 +16,7 @@ import cahing.reader.api.raseedi.prof.raseedapireader.Model.RoomDB.Dao.AdsDao;
 
 /**
  * Created by Prof-Mohamed Atef on 28/05/2019.
- * declaration of D.B details ( version, schema )
+ * declaration of D.B details ( version, schema, Instance)
  */
 
 @Database(entities = {AdsEntity.class}, version = 1, exportSchema = false)

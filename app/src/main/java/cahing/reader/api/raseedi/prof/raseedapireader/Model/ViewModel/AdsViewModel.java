@@ -14,6 +14,7 @@ import cahing.reader.api.raseedi.prof.raseedapireader.helpers.Config;
 
 /**
  * Created by Prof-Mohamed Atef on 30/05/2019.
+ * ViewModel Class
  */
 
 public class AdsViewModel extends AndroidViewModel {

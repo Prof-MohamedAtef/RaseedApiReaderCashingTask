@@ -10,6 +10,7 @@ import cahing.reader.api.raseedi.prof.raseedapireader.Model.AdsEntity;
 /**
  * Created by Prof-Mohamed Atef on 28/05/2019.
  * implementation of Observables
+ * Depend on observables to loadAds ..
  */
 
 public class LiveDataRepo {

@@ -26,6 +26,7 @@ public class WebViewActivity extends AppCompatActivity {
         setTheme(R.style.WebTheme);
         ButterKnife.bind(this);
 
+        // load url on the webView
         Intent intent=getIntent();
         String url=intent.getExtras().getString(AdUrl);
         webView.loadUrl(url);

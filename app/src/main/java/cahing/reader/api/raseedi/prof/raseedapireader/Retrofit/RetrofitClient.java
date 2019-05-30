@@ -7,6 +7,7 @@ import retrofit2.converter.gson.GsonConverterFactory;
 /**
  * Created by Prof-Mohamed Atef on 28/05/2019.
  * From which JsonData will be obtained
+ * get Instance of the client
  */
 
 public class RetrofitClient {

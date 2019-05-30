@@ -17,6 +17,7 @@ public class VerifyConnection {
 
     public boolean isInternetConnected;
 
+    //check whether isInternetConnected or not
     public boolean checkConnection() {
         return isInternetConnected=isConnected();
     }

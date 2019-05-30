@@ -18,6 +18,7 @@ public class InsertClass {
 
     public void MakeInsert(AppDatabase mDatabase, List<AdsEntity> adsEntities, MainActivity mainActivity, Context mContext) {
         InsertAsyncTask insertAsyncTask=new InsertAsyncTask(mDatabase,adsEntities,mainActivity, mContext);
+        //execute in the Background Thread
         insertAsyncTask.execute();
     }
 }

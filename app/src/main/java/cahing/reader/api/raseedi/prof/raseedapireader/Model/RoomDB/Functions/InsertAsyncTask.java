@@ -17,6 +17,7 @@ import cahing.reader.api.raseedi.prof.raseedapireader.R;
 
 /**
  * Created by Prof-Mohamed Atef on 30/05/2019.
+ * For Data Manipulation in the Background Thread
  */
 
 public class InsertAsyncTask extends AsyncTask<Void, Void, Boolean>{
@@ -75,6 +76,7 @@ public class InsertAsyncTask extends AsyncTask<Void, Void, Boolean>{
         super.onPostExecute(b);
         if (b!=null){
             if (onInsertCompletion!=null){
+                // return inserted data to UI Thread
                 onInsertCompletion.onInsertComplete(adsList_x);
             }
         }
@@ -86,6 +88,7 @@ public class InsertAsyncTask extends AsyncTask<Void, Void, Boolean>{
         adsRoomList=database.adsDao().getAllAds();
         if (onInsertCompletion!=null){
             adsRoomList.observe((LifecycleOwner) onInsertCompletion, adsEntities -> {
+                // try to delete if there is any previous data in D.B
                 deleteInsertOperation(Inserted, adsEntities,onInsertCompletion);
             });
         }
@@ -98,6 +101,7 @@ public class InsertAsyncTask extends AsyncTask<Void, Void, Boolean>{
                 // delete first if database has recorded data
                 int deleted=database.adsDao().deleteAllAds();
                 if (deleted>0){
+                    // insert after deletion of records
                     inserted[0]=InsertAdsList();
                     if (inserted[0]){
                         inserted[0]=true;
@@ -115,6 +119,7 @@ public class InsertAsyncTask extends AsyncTask<Void, Void, Boolean>{
                     }
                 }
             }else {
+                // If no data in Ads Table, it will Insert directly
                 inserted[0]=InsertAdsList();
                 if (inserted[0]){
                     inserted[0]=true;

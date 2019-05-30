@@ -84,7 +84,8 @@ public class MainActivity extends AppCompatActivity implements InsertAsyncTask.o
         };
         mAppExecutors = new AppExecutors();
         mDatabase= AppDatabase.getAppDatabase(getApplicationContext(),mAppExecutors);
-
+        compositeDisposable= new CompositeDisposable();
+        Config.compositeDisposable=compositeDisposable;
         VerifyConnection verifyConnection=new VerifyConnection(getApplicationContext());
         if (verifyConnection.isConnected()){
             fetchAds();
@@ -98,6 +99,7 @@ public class MainActivity extends AppCompatActivity implements InsertAsyncTask.o
     }
 
     private void getAdsFromDB() {
+        // depend on ViewModel to check whether D.B has Data or not
         adsViewModel= ViewModelProviders.of( this).get(AdsViewModel.class);
         if (adsViewModel!=null){
             adsViewModel.getmObserverMediatorLiveDataAdsList().observe(MainActivity.this, new Observer<List<AdsEntity>>() {
@@ -105,19 +107,17 @@ public class MainActivity extends AppCompatActivity implements InsertAsyncTask.o
                 public void onChanged(@Nullable List<AdsEntity> adsEntities) {
                     if (adsEntities!=null){
                         if (adsEntities.size()>0){
-//                            adsViewModel.getmObserverMediatorLiveDataAdsList().removeObserver(this::onChanged);
+                            // populate RecyclerView in UI Thread
                             populateRecyclerView(adsEntities);
                         }
                     }
                 }
             });
         }
-
     }
 
     private void fetchAds() {
-        compositeDisposable= new CompositeDisposable();
-        Config.compositeDisposable=compositeDisposable;
+        // connect to Api using Retrofit
         Config.compositeDisposable.add(myAPiInterface.getAds()
         .subscribeOn(Schedulers.io())
         .observeOn(AndroidSchedulers.mainThread())
@@ -126,7 +126,7 @@ public class MainActivity extends AppCompatActivity implements InsertAsyncTask.o
             public void accept(List<AdsEntity> adsEntities) throws Exception {
                 if (adsEntities!=null){
                     if (adsEntities.size()>0){
-                        // insert into DB
+                        // insert into DB using background Thread
                         InsertClass insertClass=new InsertClass();
                         insertClass.MakeInsert(mDatabase, adsEntities, MainActivity.this , getApplicationContext());
                     }
@@ -142,6 +142,7 @@ public class MainActivity extends AppCompatActivity implements InsertAsyncTask.o
 
     @Override
     public void onInsertComplete(List<AdsEntity> list) {
+        // display ads list in UI Thread
         populateRecyclerView(list);
     }
 }
