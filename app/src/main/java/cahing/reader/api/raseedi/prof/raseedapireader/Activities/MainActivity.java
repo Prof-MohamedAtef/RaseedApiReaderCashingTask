@@ -1,5 +1,11 @@
 package cahing.reader.api.raseedi.prof.raseedapireader.Activities;
 
+import android.arch.lifecycle.LifecycleOwner;
+import android.arch.lifecycle.Observer;
+import android.arch.lifecycle.ViewModelProvider;
+import android.arch.lifecycle.ViewModelProviders;
+import android.support.annotation.Nullable;
+import android.support.v4.app.FragmentActivity;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.support.v7.widget.LinearLayoutManager;
@@ -15,6 +21,7 @@ import butterknife.BindView;
 import butterknife.ButterKnife;
 import cahing.reader.api.raseedi.prof.raseedapireader.Adapter.AdsRecyclerViewAdapter;
 import cahing.reader.api.raseedi.prof.raseedapireader.Model.AdsEntity;
+import cahing.reader.api.raseedi.prof.raseedapireader.Model.ViewModel.AdsViewModel;
 import cahing.reader.api.raseedi.prof.raseedapireader.R;
 import cahing.reader.api.raseedi.prof.raseedapireader.Retrofit.MyAPiInterface;
 import cahing.reader.api.raseedi.prof.raseedapireader.Retrofit.RetrofitClient;
@@ -34,6 +41,7 @@ public class MainActivity extends AppCompatActivity {
     private Disposable disposable;
     private long DELAY=1000;
     private long PERIOD=5000;
+    private AdsViewModel adsViewModel;
 
     @Override
     protected void onStop() {
@@ -64,8 +72,26 @@ public class MainActivity extends AppCompatActivity {
             // get data from database
             // will be added to develop branch
             // will also be added to feature branch -- added
-            //
+            // will depend on ViewModel beyond LiveData
+            getAdsFromDB();
         }
+    }
+
+    private void getAdsFromDB() {
+        adsViewModel= ViewModelProviders.of( this).get(AdsViewModel.class);
+        if (adsViewModel!=null){
+            adsViewModel.getmObserverMediatorLiveDataAdsList().observe(this, new Observer<List<AdsEntity>>() {
+                @Override
+                public void onChanged(@Nullable List<AdsEntity> adsEntities) {
+                    if (adsEntities!=null){
+                        if (adsEntities.size()>0){
+                            populateRecyclerView(adsEntities);
+                        }
+                    }
+                }
+            });
+        }
+
     }
 
     private void fetchAds() {
@@ -76,6 +102,7 @@ public class MainActivity extends AppCompatActivity {
         .subscribe(new Consumer<List<AdsEntity>>() {
             @Override
             public void accept(List<AdsEntity> adsEntities) throws Exception {
+
                 populateRecyclerView(adsEntities);
             }
         }));

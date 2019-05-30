@@ -5,6 +5,7 @@ import android.content.Context;
 import android.support.multidex.MultiDex;
 
 import cahing.reader.api.raseedi.prof.raseedapireader.Model.RoomDB.AppDatabase;
+import cahing.reader.api.raseedi.prof.raseedapireader.Model.RoomDB.LiveDataRepo;
 
 /**
  * Created by Prof-Mohamed Atef on 28/05/2019.
@@ -27,5 +28,9 @@ public class BasicApp extends Application {
 
     public AppDatabase getDatabase() {
         return AppDatabase.getInstance(this, mAppExecutors);
+    }
+
+    public LiveDataRepo getRepository(){
+        return LiveDataRepo.getLiveDataRepoInstance(getDatabase());
     }
 }
