@@ -39,24 +39,24 @@ public class AdsEntity implements Serializable{
 
     @NonNull
     @ColumnInfo(name = "solo")
-    public boolean solo ;
+    public String solo ;
 
     @NonNull
     @ColumnInfo(name = "best_offer")
-    public boolean best_offer ;
+    public String best_offer ;
 
     @NonNull
     @ColumnInfo(name = "sucess")
-    public boolean sucess ;
+    public String sucess ;
 
     @NonNull
     @ColumnInfo(name = "order")
-    public int order ;
+    public String order ;
 
     public AdsEntity() {
     }
 
-    public AdsEntity(String picture, String action, String title, String url, boolean solo, boolean best_offer, boolean sucess, int order) {
+    public AdsEntity(String picture, String action, String title, String url, String solo, String best_offer, String sucess, String order) {
         this.picture = picture;
         this.action = action;
         this.title = title;
@@ -67,6 +67,7 @@ public class AdsEntity implements Serializable{
         this.order = order;
     }
 
+    @NonNull
     public String getPicture() {
         return picture;
     }
@@ -75,6 +76,7 @@ public class AdsEntity implements Serializable{
         this.picture = picture;
     }
 
+    @NonNull
     public String getAction() {
         return action;
     }
@@ -83,6 +85,7 @@ public class AdsEntity implements Serializable{
         this.action = action;
     }
 
+    @NonNull
     public String getTitle() {
         return title;
     }
@@ -91,6 +94,7 @@ public class AdsEntity implements Serializable{
         this.title = title;
     }
 
+    @NonNull
     public String getUrl() {
         return url;
     }
@@ -99,35 +103,39 @@ public class AdsEntity implements Serializable{
         this.url = url;
     }
 
-    public boolean isSolo() {
-        return solo;
-    }
-
-    public void setSolo(boolean solo) {
-        this.solo = solo;
-    }
-
-    public boolean isBest_offer() {
-        return best_offer;
-    }
-
-    public void setBest_offer(boolean best_offer) {
-        this.best_offer = best_offer;
-    }
-
-    public boolean isSucess() {
-        return sucess;
-    }
-
-    public void setSucess(boolean sucess) {
-        this.sucess = sucess;
-    }
-
-    public int getOrder() {
+    @NonNull
+    public String getOrder() {
         return order;
     }
 
-    public void setOrder(int order) {
+    public void setOrder(String order) {
         this.order = order;
+    }
+
+    @NonNull
+    public String getSolo() {
+        return solo;
+    }
+
+    public void setSolo(@NonNull String solo) {
+        this.solo = solo;
+    }
+
+    @NonNull
+    public String getBest_offer() {
+        return best_offer;
+    }
+
+    public void setBest_offer(@NonNull String best_offer) {
+        this.best_offer = best_offer;
+    }
+
+    @NonNull
+    public String getSucess() {
+        return sucess;
+    }
+
+    public void setSucess(@NonNull String sucess) {
+        this.sucess = sucess;
     }
 }

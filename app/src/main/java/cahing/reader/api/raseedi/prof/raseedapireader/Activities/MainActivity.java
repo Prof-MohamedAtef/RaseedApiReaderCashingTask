@@ -21,10 +21,16 @@ import butterknife.BindView;
 import butterknife.ButterKnife;
 import cahing.reader.api.raseedi.prof.raseedapireader.Adapter.AdsRecyclerViewAdapter;
 import cahing.reader.api.raseedi.prof.raseedapireader.Model.AdsEntity;
+import cahing.reader.api.raseedi.prof.raseedapireader.Model.Executers.AppExecutors;
+import cahing.reader.api.raseedi.prof.raseedapireader.Model.RoomDB.AppDatabase;
+import cahing.reader.api.raseedi.prof.raseedapireader.Model.RoomDB.Dao.AdsDao;
+import cahing.reader.api.raseedi.prof.raseedapireader.Model.RoomDB.Functions.InsertAsyncTask;
+import cahing.reader.api.raseedi.prof.raseedapireader.Model.RoomDB.RoomHelper.InsertClass;
 import cahing.reader.api.raseedi.prof.raseedapireader.Model.ViewModel.AdsViewModel;
 import cahing.reader.api.raseedi.prof.raseedapireader.R;
 import cahing.reader.api.raseedi.prof.raseedapireader.Retrofit.MyAPiInterface;
 import cahing.reader.api.raseedi.prof.raseedapireader.Retrofit.RetrofitClient;
+import cahing.reader.api.raseedi.prof.raseedapireader.helpers.Config;
 import cahing.reader.api.raseedi.prof.raseedapireader.helpers.VerifyConnection;
 import io.reactivex.Scheduler;
 import io.reactivex.android.schedulers.AndroidSchedulers;
@@ -34,7 +40,7 @@ import io.reactivex.functions.Consumer;
 import io.reactivex.schedulers.Schedulers;
 import retrofit2.Retrofit;
 
-public class MainActivity extends AppCompatActivity {
+public class MainActivity extends AppCompatActivity implements InsertAsyncTask.onInsertCompleted{
 
     MyAPiInterface myAPiInterface;
     CompositeDisposable compositeDisposable;
@@ -42,11 +48,13 @@ public class MainActivity extends AppCompatActivity {
     private long DELAY=1000;
     private long PERIOD=5000;
     private AdsViewModel adsViewModel;
+    private AppDatabase mDatabase;
+    private AppExecutors mAppExecutors;
 
     @Override
     protected void onStop() {
         super.onStop();
-        compositeDisposable.clear();
+        Config.compositeDisposable.clear();
     }
 
     @BindView(R.id.recycler_view)
@@ -64,6 +72,18 @@ public class MainActivity extends AppCompatActivity {
 
         recyclerView.setHasFixedSize(true);
         recyclerView.setLayoutManager(new LinearLayoutManager(this));
+        mDatabase =new AppDatabase() {
+            @Override
+            public AdsDao adsDao() {
+                return null;
+            }
+            @Override
+            public void clearAllTables() {
+
+            }
+        };
+        mAppExecutors = new AppExecutors();
+        mDatabase= AppDatabase.getAppDatabase(getApplicationContext(),mAppExecutors);
 
         VerifyConnection verifyConnection=new VerifyConnection(getApplicationContext());
         if (verifyConnection.isConnected()){
@@ -80,11 +100,12 @@ public class MainActivity extends AppCompatActivity {
     private void getAdsFromDB() {
         adsViewModel= ViewModelProviders.of( this).get(AdsViewModel.class);
         if (adsViewModel!=null){
-            adsViewModel.getmObserverMediatorLiveDataAdsList().observe(this, new Observer<List<AdsEntity>>() {
+            adsViewModel.getmObserverMediatorLiveDataAdsList().observe(MainActivity.this, new Observer<List<AdsEntity>>() {
                 @Override
                 public void onChanged(@Nullable List<AdsEntity> adsEntities) {
                     if (adsEntities!=null){
                         if (adsEntities.size()>0){
+//                            adsViewModel.getmObserverMediatorLiveDataAdsList().removeObserver(this::onChanged);
                             populateRecyclerView(adsEntities);
                         }
                     }
@@ -96,14 +117,20 @@ public class MainActivity extends AppCompatActivity {
 
     private void fetchAds() {
         compositeDisposable= new CompositeDisposable();
-        compositeDisposable.add(myAPiInterface.getAds()
+        Config.compositeDisposable=compositeDisposable;
+        Config.compositeDisposable.add(myAPiInterface.getAds()
         .subscribeOn(Schedulers.io())
         .observeOn(AndroidSchedulers.mainThread())
         .subscribe(new Consumer<List<AdsEntity>>() {
             @Override
             public void accept(List<AdsEntity> adsEntities) throws Exception {
-
-                populateRecyclerView(adsEntities);
+                if (adsEntities!=null){
+                    if (adsEntities.size()>0){
+                        // insert into DB
+                        InsertClass insertClass=new InsertClass();
+                        insertClass.MakeInsert(mDatabase, adsEntities, MainActivity.this , getApplicationContext());
+                    }
+                }
             }
         }));
     }
@@ -111,5 +138,10 @@ public class MainActivity extends AppCompatActivity {
     private void populateRecyclerView(List<AdsEntity> adsEntities) {
         AdsRecyclerViewAdapter adapter=new AdsRecyclerViewAdapter(getApplicationContext(),adsEntities,false);
         recyclerView.setAdapter(adapter);
+    }
+
+    @Override
+    public void onInsertComplete(List<AdsEntity> list) {
+        populateRecyclerView(list);
     }
 }
